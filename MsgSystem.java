@@ -35,7 +35,7 @@ public class MsgSystem {
     public double calculateWeeklyMortgagePayments() {
         double total = 0.0;
         for (Mortgage mortgage : mortgages) {
-            double escrow = (mortgage.getAnnualInsurancePremium() * mortgage.getAnnualInsurancePremium()) / 52.0;
+            double escrow = (mortgage.getAnnualInsurancePremium() * mortgage.getAnnualPropetyTax()) / 52.0;
             total += mortgage.getWeeklyPayment() + escrow;
         }
         this.expectedMortgagePaymentsForWeek = total;
