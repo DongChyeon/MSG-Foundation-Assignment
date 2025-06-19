@@ -1,0 +1,61 @@
+@startuml
+actor MSG_Member
+
+participant "MSG System" as msg
+participant "Investment" as inv
+participant "Mortgage" as mort
+participant "OperatingExpense" as op
+
+MSG_Member -> msg : calculateAvailableFundsForWeek()
+
+activate msg
+msg -> msg : calculateWeeklyInvestmentReturn()
+activate msg
+msg -> msg : calculateInvestmentReturn()
+activate msg
+loop for each investment
+    msg -> inv : getExpectedAnnualReturn()
+    return annualReturn
+end
+return totalAnnualReturn
+msg -> msg : totalReturn / 52.0
+return weeklyInvestmentReturn
+deactivate msg
+
+msg -> msg : calculateWeeklyOperatingExpense()
+activate msg
+msg -> op : calculateWeeklyExpense()
+return weeklyOperatingExpense
+deactivate msg
+
+msg -> msg : calculateWeeklyMortgagePayments()
+activate msg
+loop for each mortgage
+    msg -> mort : getWeeklyPayment()
+    return payment
+    msg -> mort : getAnnualInsurancePremium()
+    return insurance
+end
+msg --> msg: totalMortgagePayment
+deactivate msg
+
+msg -> msg : calculateWeeklyGrants()
+activate msg
+loop for each mortgage
+    msg -> mort : getAnnualInsurancePremium()
+    return premium
+    msg -> mort : getAnnualPropertyTax()
+    return tax
+    msg -> mort : getWeeklyPayment()
+    return payment
+    msg -> mort : getWeeklyIncome()
+    return income
+end
+msg --> msg: totalGrant
+deactivate msg
+
+msg -> msg : sum all weeklyInvestmentReturn + weeklyOperatingExpense + mortgagePayments + grants
+return availableFundsForWeek
+deactivate msg
+
+@enduml
