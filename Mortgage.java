@@ -6,7 +6,7 @@ public class Mortgage {
     private double originalPurchasePrice;
     private LocalDate issuedDate;
 
-    private double weeklyPayment;
+    private double weeklyRepayment;
 
     private double annualPropertyTax;
     private LocalDate propertyTaxUpdatedDate;
@@ -15,13 +15,13 @@ public class Mortgage {
     private LocalDate insuranceUpdatedDate;
 
     public Mortgage(String mortgageId, Borrower borrower, double originalPurchasePrice,
-                    LocalDate issuedDate, double weeklyPayment, double weeklyIncome,
+                    LocalDate issuedDate, double weeklyRepayment, double weeklyIncome,
                     double annualPropertyTax, double annualInsurancePremium) {
         this.mortgageId = mortgageId;
         this.borrower = borrower;
         this.originalPurchasePrice = originalPurchasePrice;
         this.issuedDate = issuedDate;
-        this.weeklyPayment = weeklyPayment;
+        this.weeklyRepayment = weeklyRepayment;
         this.annualPropertyTax = annualPropertyTax;
         this.annualInsurancePremium = annualInsurancePremium;
         this.propertyTaxUpdatedDate = LocalDate.now();
@@ -36,8 +36,8 @@ public class Mortgage {
         return borrower;
     }
 
-    public double getWeeklyPayment() {
-        return weeklyPayment;
+    public double getWeeklyRepayment() {
+        return weeklyRepayment;
     }
 
     public double getAnnualPropertyTax() {
@@ -52,8 +52,8 @@ public class Mortgage {
         return borrower.getTotalIncome() / 52.0;
     }
 
-    public double calculateMonthlyPayment() {
-        return weeklyPayment * 4.345;
+    public double calculateMonthlyRepayment() {
+        return weeklyRepayment * 4.345;
     }
 
     public void updatePropertyTax(double tax, LocalDate updatedDate) {

@@ -8,7 +8,7 @@ public class MsgSystem {
 
     private double availableFundsForWeek;
     private double expectedGrantsForWeek;
-    private double expectedMortgagePaymentsForWeek;
+    private double expectedMortgageRepaymentsForWeek;
 
     public MsgSystem(List<Investment> investments, List<Mortgage> mortgages, OperatingExpense expense) {
         this.investments = investments;
@@ -32,13 +32,13 @@ public class MsgSystem {
         return operatingExpense.calculateWeeklyExpense();
     }
 
-    public double calculateWeeklyMortgagePayments() {
+    public double calculateWeeklyMortgageRepayments() {
         double total = 0.0;
         for (Mortgage mortgage : mortgages) {
-            double escrow = (mortgage.getAnnualInsurancePremium() * mortgage.getAnnualPropetyTax()) / 52.0;
-            total += mortgage.getWeeklyPayment() + escrow;
+            double escrow = (mortgage.getAnnualInsurancePremium() * mortgage.getAnnualPropertyTax()) / 52.0;
+            total += mortgage.getWeeklyRepayment() + escrow;
         }
-        this.expectedMortgagePaymentsForWeek = total;
+        this.expectedMortgageRepaymentsForWeek = total;
         return total;
     }
 
@@ -46,7 +46,7 @@ public class MsgSystem {
         double total = 0.0;
         for (Mortgage mortgage : mortgages) {
             double escrow = (mortgage.getAnnualInsurancePremium() + mortgage.getAnnualPropertyTax()) / 52.0;
-            double totalWeeklyPay = mortgage.getWeeklyPayment() + escrow;
+            double totalWeeklyPay = mortgage.getWeeklyRepayment() + escrow;
             double incomeLimit = mortgage.getWeeklyIncome() * 0.28;
 
             if (totalWeeklyPay <= incomeLimit) {
@@ -60,10 +60,10 @@ public class MsgSystem {
     public double calculateAvailableFundsForWeek() {
         double weeklyInvestment = calculateWeeklyInvestmentReturn();
         double weeklyOperatingExpense = calculateWeeklyOperatingExpense();
-        double weeklyMortgagePayments = calculateWeeklyMortgagePayments();
+        double weeklyMortgageRepayments = calculateWeeklyMortgageRepayments();
         double weeklyGrants = calculateWeeklyGrants();
 
-        this.availableFundsForWeek = weeklyInvestment + weeklyOperatingExpense + weeklyMortgagePayments + weeklyGrants;
+        this.availableFundsForWeek = weeklyInvestment + weeklyOperatingExpense + weeklyMortgageRepayments + weeklyGrants;
         return this.availableFundsForWeek;
     }
 
@@ -72,7 +72,7 @@ public class MsgSystem {
         System.out.println("예상 연간 운영 비용: " + operatingExpense.getAnnualExpense());
         System.out.println("주간 운영 비용: " + calculateWeeklyOperatingExpense());
         System.out.println("예상 주간 투자 수익: " + calculateWeeklyInvestmentReturn());
-        System.out.println("예상 주간 모기지 지불: " + expectedMortgagePaymentsForWeek);
+        System.out.println("예상 주간 모기지 지불: " + expectedMortgageRepaymentsForWeek);
         System.out.println("예상 주간 보조금: " + expectedGrantsForWeek);
         System.out.println("주간 사용 가능한 자금: " + availableFundsForWeek);
     }
@@ -92,7 +92,7 @@ public class MsgSystem {
         for (Mortgage mortgage : mortgages) {
             System.out.println("모기지 ID: " + mortgage.getMortgageId() +
                                ", 차용인: " + mortgage.getBorrower() +
-                               ", 주간 지불: " + mortgage.getWeeklyPayment() +
+                               ", 주간 지불: " + mortgage.getWeeklyRepayment() +
                                ", 주간 소득: " + mortgage.getWeeklyIncome() +
                                ", 연간 재산세: " + mortgage.getAnnualPropertyTax() +
                                ", 연간 보험료: " + mortgage.getAnnualInsurancePremium());

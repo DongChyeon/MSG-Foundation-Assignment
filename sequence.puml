@@ -23,11 +23,11 @@ activate op
 return weeklyOperatingExpense
 deactivate op
 
-msg -> msg : calculateWeeklyMortgagePayments()
+msg -> msg : calculateWeeklyMortgageRepayments()
 activate msg
     loop for each mortgage
-        msg -> mort : getWeeklyPayment()
-        return payment
+        msg -> mort : getWeeklyRepayment()
+        return Repayment
         msg -> mort : getAnnualInsurancePremium()
         return insurance
     end
@@ -40,8 +40,8 @@ activate msg
         return premium
         msg -> mort : getAnnualPropertyTax()
         return tax
-        msg -> mort : getWeeklyPayment()
-        return payment
+        msg -> mort : getWeeklyRepayment()
+        return Repayment
         msg -> mort : getWeeklyIncome()
         return income
     end
